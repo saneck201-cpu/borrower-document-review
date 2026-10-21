@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#102a24" />
+  <title>Разбор заемщика — рабочее место аналитика</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"></script>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="#"><span class="brand-mark">Р</span><span>разбор<span class="brand-light">заемщика</span></span></a><span class="local-badge"><i></i> Файлы остаются на устройстве</span></header>
+  <main>
+    <section class="intro"><div class="eyebrow">РАБОЧЕЕ МЕСТО АНАЛИТИКА</div><h1>Соберите документы<br><em>в понятный разбор.</em></h1><p class="lead">Загрузите папку или несколько файлов. Система разложит документы по типам, извлечёт доступные реквизиты и подготовит книгу Excel для проверки.</p></section>
+    <section class="workspace">
+      <div class="upload-card" id="dropzone"><input id="fileInput" type="file" multiple hidden accept=".pdf,.docx,.doc,.xlsx,.xls,.xml,.txt,.csv,.rtf,.jpg,.jpeg,.png,.tif,.tiff" webkitdirectory directory />
+        <div class="upload-icon">↑</div><h2>Перетащите документы сюда</h2><p>Можно выбрать папку заемщика или добавить файлы пачкой</p>
+        <div class="upload-actions"><button class="button primary" id="chooseFolder">Выбрать папку</button><button class="button secondary" id="chooseFiles">Выбрать файлы</button></div><div class="formats">PDF · Excel · Word · XML · изображения</div>
+      </div>
+      <div class="privacy-note"><span>⌑</span><div><b>Конфиденциальность</b><br>Обработка выполняется в вашем браузере. Документы не отправляются на сервер и не добавляются в публичный репозиторий.</div></div>
+    </section>
+    <section id="results" class="results hidden">
+      <div class="section-head"><div><div class="eyebrow">СОСТАВ ПАКЕТА</div><h2>Документы для разбора <span id="fileCount" class="count"></span></h2></div><button id="download" class="button primary" disabled>↓　Скачать Excel</button></div>
+      <div class="summary-grid" id="summary"></div>
+      <div class="table-wrap"><table><thead><tr><th>ФАЙЛ</th><th>ОПРЕДЕЛЁННЫЙ ТИП</th><th>ИЗВЛЕЧЕНО</th><th>СТАТУС</th></tr></thead><tbody id="fileRows"></tbody></table></div>
+      <p class="footnote">Автоматическая классификация и извлечение могут ошибаться. Проверьте тип, реквизиты, периоды и все выводы по первоисточникам. Сканированные изображения требуют OCR и пока не распознаются.</p>
+    </section>
+    <section class="how"><div class="eyebrow">КАК ЭТО РАБОТАЕТ</div><div class="steps"><div><b>01</b><h3>Добавьте пакет</h3><p>Можно загрузить папку целиком — структура каталогов и названия помогут классификации.</p></div><div><b>02</b><h3>Проверьте разбор</h3><p>Посмотрите, что распознано и каких документов не хватает для проверки.</p></div><div><b>03</b><h3>Скачайте книгу</h3><p>Excel содержит реестр, извлечённые поля и контрольный список для аналитика.</p></div></div></section>
+  </main>
+  <footer><span>РАЗБОР ЗАЕМЩИКА</span><span>Инструмент подготовки материалов. Не принимает кредитных решений.</span></footer>
+  <script src="app.js"></script>
+</body></html>
+
