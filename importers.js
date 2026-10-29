@@ -73,19 +73,24 @@
   }
 
   /* ── Листы Excel: определяем, какие листы содержат первичные данные ── */
-  const DERIVED_SHEET = /удельн|изм\.?\s*стр|коэфф|график|справочн|фин\s*показ|нефин|рейтинг|чистые\s*актив|резерв|расчет|субъект|провер|источник|документ|сводка|фин\s*состоян|квартал/i;
+  const DERIVED_SHEET = /удельн|изм\.?\s*стр|коэфф|график|справочн|фин\s*показ|нефин|рейтинг|чистые\s*актив|резерв|расчет|субъект|провер|источник|документ|сводка|фин\s*состоян/i;
   const PRIMARY_SHEET = /актив|пассив|баланс|приб|убыт|финрез|отчет|ф1|ф2|форма|опу|бух/i;
   function importWorkbookObj(wb, file) {
     const recs = []; const names = wb.SheetNames.slice().sort((a, b) => (PRIMARY_SHEET.test(a) ? 0 : 1) - (PRIMARY_SHEET.test(b) ? 0 : 1));
     const skipped = [];
     for (const name of names) {
-      if (DERIVED_SHEET.test(name) && !PRIMARY_SHEET.test(name)) { skipped.push(name); continue; }
+      if (DERIVED_SHEET.test(name)) { skipped.push(name); continue; }
       const ws = wb.Sheets[name]; if (!ws) continue;
       let grid; try { grid = XLSX.utils.sheet_to_json(ws, { header: 1, raw: true, defval: '' }); } catch (e) { continue; }
       if (!grid.length) continue;
       recs.push(...importGrid(grid, { src: file.path || file.name, sheet: name }));
     }
-    return { records: recs, skipped };
+    return { records: dropEmptyPeriods(recs), skipped };
+  }
+  /** Периоды, где все значения нулевые (пустые колонки шаблонов), отбрасываем */
+  function dropEmptyPeriods(recs) {
+    const nz = new Set(); for (const r of recs) if (r.value) nz.add(r.key);
+    return recs.filter(r => nz.has(r.key) || r.key === 'latest');
   }
 
   /* ── PDF: строки по координатам ── */
@@ -218,5 +223,5 @@
     return res;
   }
 
-  AZ.imp = { importGrid, importWorkbookObj, parsePdfPage, readDocx, legacyDocText, rtfText, expandZip, classify, USED_FOR, readItem, rowCodeOf };
+  AZ.imp = { dropEmptyPeriods, importGrid, importWorkbookObj, parsePdfPage, readDocx, legacyDocText, rtfText, expandZip, classify, USED_FOR, readItem, rowCodeOf };
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -1,5 +1,5 @@
 const CACHE='borrower-review-v14';
-const FILES=['./','./index.html','./styles.css?v=14','./xw.js?v=14','./model.js?v=14','./importers.js?v=14','./merge.js?v=14','./export.js?v=14','./export2.js?v=14','./app.js?v=14','./manifest.webmanifest','./icon.svg'];
+const FILES=['./','./index.html','./styles.css?v=14','./xw.js?v=14','./model.js?v=14','./importers.js?v=14','./core.js?v=14','./export_a.js?v=14','./export_b.js?v=14','./export_c.js?v=14','./app.js?v=14','./manifest.webmanifest','./icon.svg'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',event=>{const req=event.request;if(req.method!=='GET'||new URL(req.url).origin!==self.location.origin)return;event.respondWith((async()=>{try{const fresh=await fetch(req);if(fresh.ok){const cache=await caches.open(CACHE);cache.put(req,fresh.clone())}return fresh}catch{const cached=await caches.match(req,{ignoreSearch:true});return cached||Response.error()}})())});
